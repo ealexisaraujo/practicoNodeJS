@@ -22,4 +22,14 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.post('/', async (req, res) => {
+  const { id, name } = req.body;
+  try {
+    const user = await controller.upsert({ id, name });
+    response.success(req, res, user, 200);
+  } catch (error) {
+    response.error(req, res, error.message, 500);
+  }
+});
+
 module.exports = router;

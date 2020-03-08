@@ -13,7 +13,7 @@ class UserController {
 
   upsert({ id = null, name = null }) {
     if (!id || !name) {
-      return Promise.reject('No se indico el id o el nombre');
+      return Promise.reject('No se indico el nombre del usuario');
     }
     const user = {
       id,
