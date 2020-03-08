@@ -1,31 +1,39 @@
 const db = {
-  user: [{ id: 1, name: 'Alexis' }]
+  user: [
+    { id: '1', name: 'Alexis' },
+    { id: '2', name: 'Pamela' }
+  ]
 };
 
-const list = async tabla => {
-  const result = await db[tabla];
-  return result;
-};
+async function list(tabla) {
+  return db[tabla] || [];
+}
 
-const get = async (tabla, id) => {
-  let col = list(tabla);
-  const result = (await col.find(item => item.id == id)) || null;
-  return result;
-};
+async function get(tabla, id) {
+  const col = await list(tabla);
+  return col.filter(item => item.id === id)[0] || null;
+}
 
-const upsert = async (tabla, data) => {
-  const datainsert = await db[tabla].push(data);
-  return datainsert;
-};
+async function upsert(tabla, data) {
+  if (!db[tabla]) {
+    db[tabla] = [];
+  }
 
-// eslint-disable-next-line no-unused-vars
-const remove = (tabla, id) => {
+  db[tabla].push(data);
+  console.log(data);
+}
+
+async function remove(tabla, id) {
+  const index = db[tabla].findIndex(item => item.id === id);
+  if (index >= 0) {
+    db[tabla].splice(index, 1);
+  }
   return true;
-};
+}
 
 module.exports = {
-  list: list,
-  get: get,
-  upsert: upsert,
-  remove: remove
+  list,
+  get,
+  upsert,
+  remove
 };
